@@ -104,6 +104,8 @@ export type OnHovercardShown = ( hash: string, hovercard: HTMLDivElement ) => vo
 
 export type OnHovercardHidden = ( hash: string, hovercard: HTMLDivElement ) => void;
 
+export type OnCanShowHovercard = ( hash: string ) => boolean;
+
 export type Options = Partial< {
 	placement: Placement;
 	offset: number;
@@ -120,7 +122,7 @@ export type Options = Partial< {
 	onFetchProfileFailure: OnFetchProfileFailure;
 	onHovercardShown: OnHovercardShown;
 	onHovercardHidden: OnHovercardHidden;
-	onCanShowHovercard: ( hash: string ) => boolean;
+	onCanShowHovercard: OnCanShowHovercard;
 } >;
 
 interface HovercardRef {
@@ -150,7 +152,7 @@ export default class Hovercards {
 	_onFetchProfileFailure: OnFetchProfileFailure;
 	_onHovercardShown: OnHovercardShown;
 	_onHovercardHidden: OnHovercardHidden;
-	_canShowHovercard: ( hash: string ) => boolean;
+	_canShowHovercard: OnCanShowHovercard;
 	_i18n: Record< string, string > = {};
 
 	// Variables

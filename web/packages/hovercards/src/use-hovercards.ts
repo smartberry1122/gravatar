@@ -26,6 +26,7 @@ export default function useHovercards( {
 	onFetchProfileFailure,
 	onHovercardShown,
 	onHovercardHidden,
+	onCanShowHovercard,
 }: Options = {} ): UseHovercardsReturnValues {
 	// These callbacks / variables won't trigger hooks update and will always be the latest
 	const onQueryHovercardRefRef = useLatest( onQueryHovercardRef );
@@ -34,6 +35,7 @@ export default function useHovercards( {
 	const onFetchProfileFailureRef = useLatest( onFetchProfileFailure );
 	const onHovercardShownRef = useLatest( onHovercardShown );
 	const onHovercardHiddenRef = useLatest( onHovercardHidden );
+	const onCanShowHovercardRef = useLatest( onCanShowHovercard );
 	const i18nRef = useLatest( i18n );
 	// Instantiate the Hovercards class only when the options change
 	const { attach, detach } = useMemo(
@@ -54,6 +56,7 @@ export default function useHovercards( {
 				onFetchProfileFailure: onFetchProfileFailureRef.current,
 				onHovercardShown: onHovercardShownRef.current,
 				onHovercardHidden: onHovercardHiddenRef.current,
+				onCanShowHovercard: onCanShowHovercardRef.current,
 			} ),
 		[
 			placement,
@@ -71,6 +74,7 @@ export default function useHovercards( {
 			onFetchProfileFailureRef,
 			onHovercardShownRef,
 			onHovercardHiddenRef,
+			onCanShowHovercardRef,
 		]
 	);
 

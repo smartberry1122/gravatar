@@ -264,6 +264,10 @@ This callback function is triggered when the hovercard is shown. It takes the Gr
 
 This callback function is triggered when the hovercard is hidden. It takes the Gravatar hash and the hovercard element as parameters.
 
+##### `onCanShowHovercard: ( hash: string ) => bool`
+
+This callback function is triggered just before a hovercard is shown, giving you control over the card at runtime. It takes the Gravatar hash and returns a boolean value. If the value returned is `false` then the card won't be shown.
+
 #### Methods
 
 The `Hovercards` class provides the following methods:
@@ -435,7 +439,7 @@ function App() {
 
     useEffect( () => {
         if ( containerRef.current ) {
-            attach( containerRef.current );   
+            attach( containerRef.current );
         }
     }, [ attach ] );
 
@@ -470,7 +474,7 @@ function Avatar( { email } ) {
 
     useEffect( () => {
         if ( imgRef.current ) {
-            attach( imgRef.current ); 
+            attach( imgRef.current );
         }
     }, [ attach ] );
 

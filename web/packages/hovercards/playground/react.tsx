@@ -18,7 +18,13 @@ const props: HovercardsProps = {
 
 function App() {
 	// eslint-disable-next-line no-console
-	const { attach } = useHovercards( { onFetchProfileSuccess: ( hash ) => console.log( hash ) } );
+	const { attach } = useHovercards( {
+		onFetchProfileSuccess: ( hash ) => console.log( hash ),
+		onCanShowHovercard: ( hash ) => {
+			console.log( 'Can show hovercard: ', hash );
+			return true;
+		},
+	} );
 	const containerRef = useRef( null );
 
 	useEffect( () => {
