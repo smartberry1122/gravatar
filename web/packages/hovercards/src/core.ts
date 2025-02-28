@@ -127,6 +127,8 @@ interface HovercardRef {
 	hash: string;
 	params: string;
 	ref: HTMLElement;
+	onEnter: ( e: MouseEvent ) => void;
+	onLeave: ( e: MouseEvent ) => void;
 }
 
 const BASE_API_URL = 'https://api.gravatar.com/v3/profiles';
@@ -277,6 +279,11 @@ export default class Hovercards {
 					ref: this._onQueryHovercardRef( ref ) || ref,
 				};
 			} )
+			.map( ( hovercardRef: HovercardRef ) => ( {
+				...hovercardRef,
+				onEnter: ( e: MouseEvent ) => this._handleMouseEnter( e, hovercardRef ),
+				onLeave: ( e: MouseEvent ) => this._handleMouseLeave( e, hovercardRef ),
+			} ) )
 			.filter( Boolean );
 
 		return this._hovercardRefs;
@@ -903,8 +910,8 @@ export default class Hovercards {
 		this.detach();
 
 		this._queryHovercardRefs( target, dataAttributeName, ignoreSelector ).forEach( ( hovercardRef ) => {
-			hovercardRef.ref.addEventListener( 'mouseenter', ( e ) => this._handleMouseEnter( e, hovercardRef ) );
-			hovercardRef.ref.addEventListener( 'mouseleave', ( e ) => this._handleMouseLeave( e, hovercardRef ) );
+			hovercardRef.ref.addEventListener( 'mouseenter', hovercardRef.onEnter );
+			hovercardRef.ref.addEventListener( 'mouseleave', hovercardRef.onLeave );
 		} );
 	};
 
@@ -918,9 +925,9 @@ export default class Hovercards {
 			return;
 		}
 
-		this._hovercardRefs.forEach( ( { ref } ) => {
-			ref.removeEventListener( 'mouseenter', () => this._handleMouseEnter );
-			ref.removeEventListener( 'mouseleave', () => this._handleMouseLeave );
+		this._hovercardRefs.forEach( ( hovercardRef ) => {
+			hovercardRef.ref.removeEventListener( 'mouseenter', hovercardRef.onEnter );
+			hovercardRef.ref.removeEventListener( 'mouseleave', hovercardRef.onLeave );
 		} );
 
 		this._hovercardRefs = [];
