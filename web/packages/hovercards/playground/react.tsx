@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 
 import { createRoot } from 'react-dom/client';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 import type { HovercardsProps } from '../dist/index.react.d';
 import { useHovercards, Hovercards } from '../dist/index.react';
@@ -20,6 +20,12 @@ function App() {
 	// eslint-disable-next-line no-console
 	const { attach } = useHovercards( { onFetchProfileSuccess: ( hash ) => console.log( hash ) } );
 	const containerRef = useRef( null );
+	const attacherRef = useRef( null );
+	const [ hashes, setHashes ] = useState( [
+		'33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5',
+		'c3bb8d897bb538896708195dd9eb162f585654611c50a3a1c9a16a7b64f33270',
+		'20e74a1399c883caeeba81b57007bcaa058940dcdffca01babfddbaefa5c3c4a',
+	] );
 
 	useEffect( () => {
 		if ( containerRef.current ) {
@@ -27,22 +33,34 @@ function App() {
 		}
 	}, [ attach ] );
 
+	function recycle() {
+		const newHashes = [ ...hashes ];
+
+		for ( let i = newHashes.length - 1; i > 0; i-- ) {
+			const j = Math.floor( Math.random() * ( i + 1 ) );
+			[ newHashes[ i ], newHashes[ j ] ] = [ newHashes[ j ], newHashes[ i ] ];
+		}
+
+		setHashes( newHashes );
+
+		if ( attacherRef.current ) {
+			attach( attacherRef.current );
+		}
+	}
+
 	return (
 		<div style={ { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5rem' } }>
 			<div>
 				<div ref={ containerRef } style={ { display: 'flex', flexDirection: 'column', gap: '5rem' } }>
-					<img
-						src="https://www.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=60&d=retro&r=g"
-						width="60"
-						height="60"
-						alt="Gravatar"
-					/>
-					<img
-						src="https://www.gravatar.com/avatar/c3bb8d897bb538896708195dd9eb162f585654611c50a3a1c9a16a7b64f33270"
-						width="60"
-						height="60"
-						alt="Gravatar"
-					/>
+					{ hashes.map( ( hash ) => (
+						<img
+							key={ hash }
+							src={ `https://gravatar.com/avatar/${ hash }?s=128&d=retro&r=g` }
+							width="60"
+							height="60"
+							alt="Gravatar"
+						/>
+					) ) }
 				</div>
 			</div>
 			<Hovercards
@@ -50,7 +68,7 @@ function App() {
 				{ ...props }
 			>
 				<img
-					src="https://www.gravatar.com/avatar/20e74a1399c883caeeba81b57007bcaa058940dcdffca01babfddbaefa5c3c4a?s=60&d=retro&r=g"
+					src="https://gravatar.com/avatar/20e74a1399c883caeeba81b57007bcaa058940dcdffca01babfddbaefa5c3c4a?s=60&d=retro&r=g"
 					width="60"
 					height="60"
 					alt="Gravatar"
@@ -62,6 +80,12 @@ function App() {
 					@WellyTest
 				</div>
 			</Hovercards>
+
+			<div className="gravatar-hovercard-attacher">
+				<button type="button" onClick={ recycle }>
+					Recycle
+				</button>
+			</div>
 		</div>
 	);
 }
