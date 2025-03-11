@@ -165,11 +165,15 @@ type QuickEditorCoreOptions = Partial< {
 - **`onOpened: () => void`**:
   A callback function that gets called when the editor popup is opened. This can be used for logging, analytics, or other actions when the popup is triggered.
 
+- **`onClosed: () => void`**:
+  A callback function that gets called when the editor popup is closed.
+
 #### Public functions
 
-- **`open: ( email?: string ) => void`**: A function for triggering the Gravatar Quick Editor popup.
-  It can receive an email address to identify the profile to be edited.
-
+- **`open: ( email?: string ) => boolean`**: A function for triggering the Gravatar Quick Editor popup.
+  It can receive an email address to identify the profile to be edited. `true` is returned if successfully opened, `false` otherwise.
+- **`close: () => void`**: Closes an open Gravatar Quick Editor popup.
+- **`isOpen: () => boolean`**: Return `true` if the popup is open, `false` otherwise.
 
 ### Valid Scope Values
 
@@ -191,4 +195,3 @@ We welcome contributions to this project. Please follow the guidelines outlined 
 ## License
 
 Gravatar Hovercards is licensed under [GNU General Public License v2 (or later)](../../../docs/LICENSE.md).
-

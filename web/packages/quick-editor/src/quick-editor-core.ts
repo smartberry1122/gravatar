@@ -11,15 +11,18 @@ const ScopeList = [
 	'privacy',
 ] as const;
 
+const WINDOW_CHECK_INTERVAL = 500;
+
 export type Scope = ( typeof ScopeList )[ number ][];
 
 export type ProfileUpdatedType = 'avatar_updated' | 'profile_updated';
 
-export type Open = ( email?: string ) => void;
+export type Open = ( email?: string ) => boolean;
 
 export type OnProfileUpdated = ( type: ProfileUpdatedType ) => void;
 
 export type OnOpened = () => void;
+export type OnClosed = () => void;
 
 export type QuickEditorCoreOptions = Partial< {
 	email: string;
@@ -27,6 +30,7 @@ export type QuickEditorCoreOptions = Partial< {
 	locale: string;
 	onProfileUpdated: OnProfileUpdated;
 	onOpened: OnOpened;
+	onClosed: OnClosed;
 } >;
 
 export class GravatarQuickEditorCore {
@@ -36,14 +40,17 @@ export class GravatarQuickEditorCore {
 	_locale: string;
 	_onProfileUpdated: OnProfileUpdated;
 	_onOpened: OnOpened;
+	_onClosed: OnClosed;
+	_window: Window | null = null;
 
-	constructor( { email, scope = [], locale, onProfileUpdated, onOpened }: QuickEditorCoreOptions ) {
+	constructor( { email, scope = [], locale, onProfileUpdated, onOpened, onClosed }: QuickEditorCoreOptions ) {
 		this._name = this._getName();
 		this._email = email;
 		this._scope = scope;
 		this._locale = locale;
 		this._onProfileUpdated = onProfileUpdated;
 		this._onOpened = onOpened;
+		this._onClosed = onClosed;
 
 		if ( ! this._scope.every( ( s ) => ScopeList.includes( s ) ) ) {
 			// eslint-disable-next-line
@@ -62,7 +69,7 @@ export class GravatarQuickEditorCore {
 		if ( ! email ) {
 			// eslint-disable-next-line
 			console.error( 'Gravatar Quick Editor: Email not provided' );
-			return;
+			return false;
 		}
 
 		email = encodeURIComponent( email );
@@ -76,11 +83,38 @@ export class GravatarQuickEditorCore {
 		const host = this._locale ? `https://${ this._locale }.gravatar.com` : 'https://gravatar.com';
 		const url = `${ host }/profile?email=${ email }&scope=${ scope }&is_quick_editor=true`;
 
-		window.open( url, this._name, options );
+		this._window = window.open( url, this._name, options );
+
+		if ( this._window === null ) {
+			// eslint-disable-next-line
+			console.error( 'Gravatar Quick Editor: Could not open window' );
+			return false;
+		}
 
 		if ( this._onOpened ) {
 			this._onOpened();
 		}
+
+		if ( this._onClosed ) {
+			const timer = setInterval( () => {
+				if ( this._window.closed ) {
+					clearInterval( timer );
+					this._onClosed();
+				}
+			}, WINDOW_CHECK_INTERVAL );
+		}
+
+		return true;
+	};
+
+	close = () => {
+		if ( this._window ) {
+			this._window.close();
+		}
+	};
+
+	isOpen: () => boolean = () => {
+		return this._window !== null && ! this._window.closed;
 	};
 
 	_getName() {
