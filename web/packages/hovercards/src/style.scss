@@ -222,8 +222,18 @@ $font-sf-pro: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 		gap: 34px;
 	}
 
+	.gravatar-hovercard__error-message-wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
 	.gravatar-hovercard__error-message {
 		color: $color-gray;
+
+		&.gravatar-hovercard__error-message--claim-gravatar a {
+			color: inherit;
+		}
 	}
 }
 

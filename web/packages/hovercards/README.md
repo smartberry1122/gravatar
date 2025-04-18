@@ -311,9 +311,9 @@ const hovercardSkeleton = Hovercards.createHovercardSkeleton();
 document.getElementById( 'container' ).appendChild( hovercardSkeleton );
 ```
 
-##### `(static) createHovercardError( avatarUrl: string, message: string, options?: { additionalClass?: string; avatarAlt?: string } ): HTMLDivElement`
+##### `(static) createHovercardError( avatarUrl: string, message: string, options?: { additionalClass?: string; avatarAlt?: string; additionalMessage?: string } ): HTMLDivElement`
 
-This method generates an error hovercard element. It accepts the `avatarUrl` parameter, which represents the URL of the avatar image, the `message` parameter, which represents the error message, and an optional options object that can include properties such as [`additionalClass`](#additionalclass-string) and [`avatarAlt`](#avataralt-string) (default: `'Avatar'`). It's useful when you want to display an error message when fetching the Gravatar profile fails.
+This method generates an error hovercard element. It accepts the `avatarUrl` parameter, which represents the URL of the avatar image, the `message` parameter, which represents the error message, and an optional options object that can include properties such as [`additionalClass`](#additionalclass-string), [`avatarAlt`](#avataralt-string) (default: `'Avatar'`) and more. It's useful when you want to display an error message when fetching the Gravatar profile fails.
 
 ```js
 import { Hovercards } from '@gravatar-com/hovercards';
@@ -506,9 +506,11 @@ The following phrases are used:
 - `Contact`
 - `Send money`
 - `Sorry, we are unable to load this Gravatar profile.`
-- `Profile not found.`
+- `Gravatar not found.`
 - `Too Many Requests.`
 - `Internal Server Error.`
+- `Is this you?`
+- `Claim your free profile.`
 
 The `i18n` option is an object that maps from the English text to the language of your choice (even another English phrase, if you wish to change the text).
 

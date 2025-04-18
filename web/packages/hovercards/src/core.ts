@@ -78,6 +78,7 @@ export type CreateHovercardSkeleton = ( options?: CreateHovercardSkeletonOptions
 export interface CreateHovercardErrorOptions {
 	avatarAlt?: string;
 	additionalClass?: string;
+	additionalMessage?: string;
 }
 
 export type CreateHovercardError = (
@@ -672,17 +673,18 @@ export default class Hovercards {
 	/**
 	 * Creates an error hovercard element.
 	 *
-	 * @param {string} avatarUrl                 - The URL of the avatar image.
-	 * @param {string} message                   - The error message to display.
-	 * @param {Object} [options]                 - Optional parameters for the error hovercard.
-	 * @param {string} [options.avatarAlt]       - The alt text for the avatar image.
-	 * @param {string} [options.additionalClass] - Additional CSS class for the error hovercard.
-	 * @return {HTMLDivElement}                  - The created error hovercard element.
+	 * @param {string} avatarUrl                   - The URL of the avatar image.
+	 * @param {string} message                     - The error message to display.
+	 * @param {Object} [options]                   - Optional parameters for the error hovercard.
+	 * @param {string} [options.avatarAlt]         - The alt text for the avatar image.
+	 * @param {string} [options.additionalClass]   - Additional CSS class for the error hovercard.
+	 * @param {string} [options.additionalMessage] - Additional message to display in the error hovercard.
+	 * @return {HTMLDivElement}                    - The created error hovercard element.
 	 */
 	static createHovercardError: CreateHovercardError = (
 		avatarUrl,
 		message,
-		{ avatarAlt = 'Avatar', additionalClass } = {}
+		{ avatarAlt = 'Avatar', additionalClass, additionalMessage = '' } = {}
 	) => {
 		const hovercard = dc.createElement( 'div' );
 		hovercard.className = `gravatar-hovercard gravatar-hovercard--error${
@@ -692,7 +694,10 @@ export default class Hovercards {
 		hovercard.innerHTML = `
 			<div class="gravatar-hovercard__inner">
 				<img class="gravatar-hovercard__avatar" src="${ avatarUrl }" width="104" height="104" alt="${ avatarAlt }" />
-				<i class="gravatar-hovercard__error-message">${ message }</i>
+				<div class="gravatar-hovercard__error-message-wrapper">
+					<i class="gravatar-hovercard__error-message">${ message }</i>
+					${ additionalMessage }
+				</div>
 			</div>
 		`;
 
@@ -805,7 +810,7 @@ export default class Hovercards {
 
 						switch ( code ) {
 							case 404:
-								message = __t( this._i18n, 'Profile not found.' );
+								message = __t( this._i18n, 'Gravatar not found.' );
 								break;
 							case 429:
 								message = __t( this._i18n, 'Too Many Requests.' );
@@ -815,10 +820,20 @@ export default class Hovercards {
 								break;
 						}
 
+						const additionalMessage =
+							code === 404
+								? `
+								<i class="gravatar-hovercard__error-message gravatar-hovercard__error-message--claim-gravatar">
+									${ __t( this._i18n, 'Is this you?' ) } 
+									<a href="http://gravatar.com/signup" target="_blank">${ __t( this._i18n, 'Claim your free profile.' ) }</a>
+								</i>
+								`
+								: '';
+
 						const hovercardInner = Hovercards.createHovercardError(
 							`https://0.gravatar.com/avatar/${ hash }${ params }`,
 							message,
-							{ additionalClass: this._additionalClass }
+							{ additionalClass: this._additionalClass, additionalMessage }
 						).firstElementChild;
 
 						hovercard.classList.add( 'gravatar-hovercard--error' );
