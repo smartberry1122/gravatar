@@ -413,7 +413,7 @@ export default class Hovercards {
 				}
 				<div class="gravatar-hovercard__social-links">
 					<a class="gravatar-hovercard__social-link" href="${ trackedProfileUrl }" target="_blank" data-service-name="gravatar">
-						<img class="gravatar-hovercard__social-icon" src="https://secure.gravatar.com/icons/gravatar.svg" width="32" height="32" alt="Gravatar" />
+						<img class="gravatar-hovercard__social-icon" src="https://s.gravatar.com/icons/gravatar.svg" width="32" height="32" alt="Gravatar" />
 					</a>
 					${ renderSocialLinks }
 				</div>
@@ -596,7 +596,7 @@ export default class Hovercards {
 						class="gravatar-hovercard__drawer-item-icon"
 						width="24"
 						height="24"
-						src="https://secure.gravatar.com/${ icons[ key ] }"
+						src="https://s.gravatar.com/${ icons[ key ] }"
 						alt=""
 					>
 					<div class="gravatar-hovercard__drawer-item-info">
@@ -623,7 +623,7 @@ export default class Hovercards {
 		payments.links?.forEach( ( item ) => {
 			items.push( `
 				<li class="gravatar-hovercard__drawer-item">
-					<img class="gravatar-hovercard__drawer-item-icon" width="24" height="24" src="https://secure.gravatar.com/icons/link.svg" alt="">
+					<img class="gravatar-hovercard__drawer-item-icon" width="24" height="24" src="https://s.gravatar.com/icons/link.svg" alt="">
 					<div class="gravatar-hovercard__drawer-item-info">
 						<span class="gravatar-hovercard__drawer-item-label">${ item.label }</span>
 						<span class="gravatar-hovercard__drawer-item-text">
@@ -639,7 +639,7 @@ export default class Hovercards {
 		payments.crypto_wallets?.forEach( ( item ) => {
 			items.push( `
 				<li class="gravatar-hovercard__drawer-item">
-					<img class="gravatar-hovercard__drawer-item-icon" width="24" height="24" src="https://secure.gravatar.com/icons/link.svg" alt="">
+					<img class="gravatar-hovercard__drawer-item-icon" width="24" height="24" src="https://s.gravatar.com/icons/link.svg" alt="">
 					<div class="gravatar-hovercard__drawer-item-info">
 						<span class="gravatar-hovercard__drawer-item-label">${ item.label }</span>
 						<span class="gravatar-hovercard__drawer-item-text">${ item.address }</span>
