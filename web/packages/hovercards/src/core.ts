@@ -825,7 +825,7 @@ export default class Hovercards {
 								? `
 								<i class="gravatar-hovercard__error-message gravatar-hovercard__error-message--claim-gravatar">
 									${ __t( this._i18n, 'Is this you?' ) } 
-									<a href="http://gravatar.com/signup?utm_source=hovercard" target="_blank">
+									<a href="https://gravatar.com/signup?utm_source=hovercard" target="_blank">
 										${ __t( this._i18n, 'Claim your free profile.' ) }
 									</a>
 								</i>
